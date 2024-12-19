@@ -13,7 +13,8 @@ st.set_page_config(
 )
 
 # Hardcoded API Key - Replace with your actual API key
-GEMINI_API_KEY = "AIzaSyB_l4WWo9BaM-90DQOCyKWYlGoaBLHu7Eg"
+#GEMINI_API_KEY = "AIzaSyB_l4WWo9BaM-90DQOCyKWYlGoaBLHu7Eg"
+GEMINI_API_KEY = "AIzaSyAUZ7TiRqomhfdDgkVkmdMOS8-6oZmASag"
 
 # Configure Gemini API
 genai.configure(api_key=GEMINI_API_KEY)
