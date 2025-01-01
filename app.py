@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # Hardcoded API Key - Replace with your actual API key
-GEMINI_API_KEY = "Your API Key"
+GEMINI_API_KEY = st.secrets["Gemini_API_Token"]
 
 
 # Configure Gemini API
