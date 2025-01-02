@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Hardcoded API Key - Replace with your actual API key
+# Accessing API Via Streamlit Secrets - Replace with your actual API key inside Streamlit Secrets 
 GEMINI_API_KEY = st.secrets["Gemini_API_Token"]
 
 
