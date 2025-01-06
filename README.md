@@ -11,7 +11,7 @@
 
 ![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen.png?raw=true)
 
-[Demo](#) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
+[Demo](https://gradegenie.streamlit.app/) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
 
 </div>
 
