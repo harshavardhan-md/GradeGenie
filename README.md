@@ -10,7 +10,7 @@
 > *Your AI-powered companion for automated exam evaluation*
 
 ![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen.png?raw=true)
-![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen.png?raw=true)
+![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/grading%20.png?raw=true)
 
 [Demo](https://gradegenie.streamlit.app/) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
 
