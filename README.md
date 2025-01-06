@@ -9,7 +9,7 @@
 
 > *Your AI-powered companion for automated exam evaluation*
 
-![Grade Genie Banner](https://via.placeholder.com/800x400?text=Grade+Genie)
+![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen.png?raw=true)
 
 [Demo](#) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
 
@@ -134,7 +134,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
 
-Made with 🧞 by [Harshavardhan M](google.com)
+Made with 🧞 by [Harshavardhan M](https://www.linkedin.com/in/harshavardhan-md)
 
 [⬆ Back to Top](#-grade-genie)
 
