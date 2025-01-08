@@ -78,6 +78,15 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
     }
 
+   .hero-title {
+   font-size: 5rem;
+   font-weight: 700;
+   margin-bottom: 1.5rem;
+   animation: fadeInDown 1s ease;
+   text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+   color: white;
+   }
+
     .hero-subtitle {
         font-size: 1.8rem;
         font-weight: 300;
