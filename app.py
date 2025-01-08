@@ -61,7 +61,7 @@ st.markdown("""
         max-width: 1200px;
         margin: 0 auto;
         text-align: center;
-        color: white;
+        color: black;
         position: relative;
         z-index: 2;
     }
