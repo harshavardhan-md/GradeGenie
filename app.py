@@ -66,17 +66,17 @@ st.markdown("""
         z-index: 2;
     }
 
-    .hero-title {
-        font-size: 5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        animation: fadeInDown 1s ease;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        background: linear-gradient(to right, #fff, #e0e0e0);
-        color: white;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+    # .hero-title {
+    #     font-size: 5rem;
+    #     font-weight: 700;
+    #     margin-bottom: 1.5rem;
+    #     animation: fadeInDown 1s ease;
+    #     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    #     background: linear-gradient(to right, #fff, #e0e0e0);
+    #     color: white;
+    #     -webkit-background-clip: text;
+    #     -webkit-text-fill-color: transparent;
+    # }
 
    .hero-title {
    font-size: 5rem;
