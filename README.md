@@ -9,9 +9,11 @@
 
 > *Your AI-powered companion for automated exam evaluation*
 
-![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen.png?raw=true)
-![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/grading%20.png?raw=true)
-![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen%20Mobile%20view.png?raw=true)
+![Grade Genie Banner](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/home%20screen%202.png?raw=true)
+![Grade Genie Upload Section](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Upload_Sections.png?raw=true)
+![Evaluation Rest](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Evaluation_Result.png?raw=true)
+![Detailed Evaluation Result](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Detailed_Evaluation.png?raw=true)
+![Metrics]()
 
 [Demo](https://gradegenie.streamlit.app/) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
 
