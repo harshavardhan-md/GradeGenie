@@ -463,3 +463,140 @@ def main():
         if not answer_scripts or not evaluation_scheme:
             st.markdown("""
                 <div class="warning-alert">
+                    ⚠️ Please upload both answer scripts and evaluation scheme to proceed
+                </div>
+            """, unsafe_allow_html=True)
+            return
+
+        with st.spinner("🔄 Processing your documents..."):
+            start_time = time.time()
+
+            # Extract text from evaluation scheme
+            scheme_image = Image.open(evaluation_scheme)
+            scheme_text = extract_text_from_image(scheme_image, "Extract the standard answer and evaluation criteria")
+            
+            # Results Section Header
+            st.markdown("""
+                <div class="results-container">
+                    <h2 style="text-align: center; color: var(--dark-bg); margin-bottom: 2rem;">
+                        🔍 Evaluation Results
+                    </h2>
+            """, unsafe_allow_html=True)
+            
+            # Process answer scripts
+            results = []
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future_to_script = {
+                    executor.submit(extract_text_from_image, Image.open(script)): script.name 
+                    for script in answer_scripts
+                }
+                
+                for future in concurrent.futures.as_completed(future_to_script):
+                    script_name = future_to_script[future]
+                    try:
+                        student_text = future.result()
+                        similarity_score = compute_similarity_score(student_text, scheme_text)
+                        detailed_evaluation = evaluate_answer(student_text, scheme_text)
+                        
+                        result = {
+                            'script': script_name,
+                            'student_answer': student_text,
+                            'similarity_score': similarity_score,
+                            'detailed_evaluation': detailed_evaluation
+                        }
+                        results.append(result)
+                        
+                        with st.expander(f"📄 {script_name}"):
+                            st.markdown("""
+                                <div class="results-card">
+                                    <div style="border-bottom: 1px solid #eee; margin-bottom: 1.5rem;">
+                                        <h3 style="color: var(--primary-color);">📝 Student Answer</h3>
+                                    </div>
+                            """, unsafe_allow_html=True)
+                            st.write(student_text)
+                            
+                            st.markdown("""
+                                <div style="border-bottom: 1px solid #eee; margin: 1.5rem 0;">
+                                    <h3 style="color: var(--primary-color);">📊 Similarity Score</h3>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            st.progress(similarity_score/100)
+                            st.markdown(f"""
+                                <div style="text-align: center; padding: 1rem;">
+                                    <h4 style="color: var(--secondary-color); font-size: 1.5rem;">
+                                        {similarity_score}% Match
+                                    </h4>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            
+                            st.markdown("""
+                                <div style="border-bottom: 1px solid #eee; margin: 1.5rem 0;">
+                                    <h3 style="color: var(--primary-color);">📋 Detailed Evaluation</h3>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            st.write(detailed_evaluation)
+                            
+                            st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    except Exception as exc:
+                        st.markdown(f"""
+                            <div class="warning-alert">
+                                ❌ Error processing {script_name}: {str(exc)}
+                            </div>
+                        """, unsafe_allow_html=True)
+
+            # Processing Time Display
+            end_time = time.time()
+            processing_time = end_time - start_time
+            
+            st.markdown(f"""
+                <div style="text-align: center; padding: 2rem; background: var(--light-bg); border-radius: 1rem; margin: 2rem 0;">
+                    <h3 style="color: var(--primary-color);">
+                        ⏱️ Total Processing Time: {processing_time:.2f} seconds
+                    </h3>
+                </div>
+            """, unsafe_allow_html=True)
+
+            # Results Summary
+            if results:
+                avg_score = sum(r['similarity_score'] for r in results) / len(results)
+                st.markdown("""
+                    <div style="margin: 2rem 0;">
+                        <h3 style="text-align: center; color: var(--dark-bg);">📊 Results Summary</h3>
+                        <div class="stats-container">
+                """, unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                    <div class="stat-card">
+                        <div class="stat-number">{len(results)}</div>
+                        <div class="stat-label">Scripts Evaluated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{avg_score:.1f}%</div>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{processing_time:.1f}s</div>
+                        <div class="stat-label">Processing Time</div>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                st.markdown('</div></div>', unsafe_allow_html=True)
+
+                # Download Results Button
+                results_json = json.dumps(results, indent=4)
+                st.markdown("""
+                    <div style="text-align: center; margin: 2rem 0;">
+                """, unsafe_allow_html=True)
+                st.download_button(
+                    label="📥 Download Detailed Results",
+                    data=results_json,
+                    file_name="evaluation_results.json",
+                    mime="application/json"
+                )
+                st.markdown('</div>', unsafe_allow_html=True)
+
+            st.markdown('</div>', unsafe_allow_html=True)  # Close results-container
+
+if __name__ == "__main__":
+    main()
