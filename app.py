@@ -608,7 +608,7 @@ def main():
                         </h3>
                     </div>
                 """, unsafe_allow_html=True)
-    loading_placeholder.empty()
+        loading_placeholder.empty()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
