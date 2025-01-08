@@ -74,6 +74,7 @@ st.markdown("""
         # text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         # background: linear-gradient(to right, #fff, #e0e0e0);
         # background: black;
+        color: white;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
