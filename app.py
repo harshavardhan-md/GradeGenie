@@ -274,8 +274,70 @@ st.markdown("""
 
 # Rest of the Python code remains the same until the main() function
 
+# Gemini API Configuration
+GEMINI_API_KEY = st.secrets["Gemini_API_Token"]
+genai.configure(api_key=GEMINI_API_KEY)
+
+# Helper functions (same as before)
+def extract_text_from_image(image, prompt="Extract all text from this image as accurately as possible."):
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        response = model.generate_content([prompt, image])
+        return response.text.strip()
+    except Exception as e:
+        st.error(f"Error in text extraction: {str(e)}")
+        return ""
+
+def compute_similarity_score(student_answer, correct_answer):
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        similarity_prompt = f"""
+        Compare the following two texts and provide a similarity score from 0-100:
+        Correct Answer: {correct_answer}
+        Student Answer: {student_answer}
+
+        Evaluate based on:
+        1. Contextual relevance
+        2. Key concepts coverage
+        3. Accuracy of information
+        4. Structural similarity
+
+        Return ONLY the numerical similarity score.
+        """
+        
+        response = model.generate_content(similarity_prompt)
+        score = ''.join(filter(str.isdigit, response.text))
+        return int(score) if score else 85
+    except Exception as e:
+        st.error(f"Similarity score computation error: {str(e)}")
+        return 85
+
+def evaluate_answer(student_answer, correct_answer):
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        evaluation_prompt = f"""
+        Perform a detailed evaluation of the student's answer:
+        Correct Answer Context: {correct_answer}
+        Student's Answer: {student_answer}
+
+        Provide a structured analysis including:
+        1. Specific areas of mistakes
+        2. Concepts misunderstood
+        3. Potential improvements
+        4. Recommended learning resources
+
+        Format the response in a clear, constructive manner.
+        """
+        
+        response = model.generate_content(evaluation_prompt)
+        return response.text
+    except Exception as e:
+        st.error(f"Detailed evaluation error: {str(e)}")
+        return "Evaluation could not be completed"
+
+
 def main():
-    # Hero Section with Enhanced Animation
+    # Hero Section with Enhanced Animation   
     st.markdown("""
         <div class="hero-section">
             <div class="hero-content">
