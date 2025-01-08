@@ -13,7 +13,7 @@
 ![Grade Genie Upload Section](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Upload_Sections.png?raw=true)
 ![Evaluation Rest](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Evaluation_Result.png?raw=true)
 ![Detailed Evaluation Result](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Detailed_Evaluation.png?raw=true)
-![Metrics]()
+![Metrics](https://github.com/harshavardhan-md/assets_for_all_repos/blob/main/GradeGenie/Metrics.png?raw=true)
 
 [Demo](https://gradegenie.streamlit.app/) • [Documentation](#) • [Report Bug](#) • [Request Feature](#)
 
