@@ -336,10 +336,13 @@ def main():
         )
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # Enhanced Start Button
+    # Add this after the upload sections in main()
+
+    # Enhanced Start Button with Loading Animation
     st.markdown("""
         <div style="text-align: center; margin: 3rem 0;">
     """, unsafe_allow_html=True)
+    
     if st.button("🚀 Start Evaluation", key="start_eval"):
         if not answer_scripts or not evaluation_scheme:
             st.markdown("""
@@ -351,9 +354,202 @@ def main():
             """, unsafe_allow_html=True)
             return
 
-        # Rest of the evaluation logic remains the same...
+        with st.spinner(""):
+            st.markdown("""
+                <div class="glass-card" style="text-align: center;">
+                    <div class="loading-wave">
+                        <div class="loading-bar" style="animation-delay: 0s;"></div>
+                        <div class="loading-bar" style="animation-delay: 0.1s;"></div>
+                        <div class="loading-bar" style="animation-delay: 0.2s;"></div>
+                        <div class="loading-bar" style="animation-delay: 0.3s;"></div>
+                        <div class="loading-bar" style="animation-delay: 0.4s;"></div>
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--primary-color);">Processing your documents...</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            start_time = time.time()
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+            # Extract text from evaluation scheme
+            try:
+                scheme_image = Image.open(evaluation_scheme)
+                scheme_text = extract_text_from_image(scheme_image, "Extract the standard answer and evaluation criteria")
+                
+                # Results Section Header
+                st.markdown("""
+                    <div class="results-container">
+                        <h2 style="text-align: center; color: var(--dark-bg); margin-bottom: 2rem;">
+                            🔍 Evaluation Results
+                        </h2>
+                """, unsafe_allow_html=True)
+                
+                # Process answer scripts with progress
+                results = []
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                total_scripts = len(answer_scripts)
+                
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future_to_script = {
+                        executor.submit(extract_text_from_image, Image.open(script)): script.name 
+                        for script in answer_scripts
+                    }
+                    
+                    completed = 0
+                    for future in concurrent.futures.as_completed(future_to_script):
+                        script_name = future_to_script[future]
+                        completed += 1
+                        progress = completed / total_scripts
+                        progress_bar.progress(progress)
+                        status_text.markdown(f"""
+                            <div style="text-align: center; color: var(--primary-color);">
+                                Processing script {completed} of {total_scripts}: {script_name}
+                            </div>
+                        """, unsafe_allow_html=True)
+                        
+                        try:
+                            student_text = future.result()
+                            similarity_score = compute_similarity_score(student_text, scheme_text)
+                            detailed_evaluation = evaluate_answer(student_text, scheme_text)
+                            
+                            result = {
+                                'script': script_name,
+                                'student_answer': student_text,
+                                'similarity_score': similarity_score,
+                                'detailed_evaluation': detailed_evaluation
+                            }
+                            results.append(result)
+                            
+                            # Enhanced Result Card
+                            with st.expander(f"📄 {script_name}"):
+                                st.markdown("""
+                                    <div class="glass-card">
+                                        <div style="border-bottom: 2px solid rgba(67, 97, 238, 0.1); margin-bottom: 1.5rem;">
+                                            <h3 style="color: var(--primary-color); font-size: 1.5rem;">
+                                                📝 Student Answer
+                                            </h3>
+                                        </div>
+                                """, unsafe_allow_html=True)
+                                st.write(student_text)
+                                
+                                st.markdown("""
+                                    <div style="border-bottom: 2px solid rgba(67, 97, 238, 0.1); margin: 1.5rem 0;">
+                                        <h3 style="color: var(--primary-color); font-size: 1.5rem;">
+                                            📊 Similarity Score
+                                        </h3>
+                                    </div>
+                                """, unsafe_allow_html=True)
+                                
+                                # Enhanced Progress Bar
+                                progress_color = (
+                                    "#4CAF50" if similarity_score >= 80
+                                    else "#FFC107" if similarity_score >= 60
+                                    else "#F44336"
+                                )
+                                st.markdown(f"""
+                                    <div class="progress-wrapper" style="position: relative; height: 30px; background: rgba(0,0,0,0.1); border-radius: 15px; overflow: hidden;">
+                                        <div style="position: absolute; top: 0; left: 0; height: 100%; width: {similarity_score}%; background: {progress_color}; transition: width 1s ease-in-out;"></div>
+                                        <div style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                                            {similarity_score}%
+                                        </div>
+                                    </div>
+                                """, unsafe_allow_html=True)
+                                
+                                st.markdown("""
+                                    <div style="border-bottom: 2px solid rgba(67, 97, 238, 0.1); margin: 1.5rem 0;">
+                                        <h3 style="color: var(--primary-color); font-size: 1.5rem;">
+                                            📋 Detailed Evaluation
+                                        </h3>
+                                    </div>
+                                """, unsafe_allow_html=True)
+                                st.write(detailed_evaluation)
+                                
+                                st.markdown('</div>', unsafe_allow_html=True)
+                        
+                        except Exception as exc:
+                            st.markdown(f"""
+                                <div class="glass-card" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                                    <h3 style="color: #F44336; text-align: center;">
+                                        ❌ Error processing {script_name}: {str(exc)}
+                                    </h3>
+                                </div>
+                            """, unsafe_allow_html=True)
+
+                # Clear progress indicators
+                progress_bar.empty()
+                status_text.empty()
+
+                # Processing Time Display
+                end_time = time.time()
+                processing_time = end_time - start_time
+                
+                st.markdown(f"""
+                    <div class="glass-card" style="text-align: center; margin: 2rem 0;">
+                        <h3 style="color: var(--primary-color);">
+                            ⏱️ Total Processing Time: {processing_time:.2f} seconds
+                        </h3>
+                    </div>
+                """, unsafe_allow_html=True)
+
+                # Results Summary with Enhanced Styling
+                if results:
+                    avg_score = sum(r['similarity_score'] for r in results) / len(results)
+                    st.markdown("""
+                        <div class="glass-card" style="margin: 2rem 0;">
+                            <h3 style="text-align: center; color: var(--dark-bg); margin-bottom: 2rem;">
+                                📊 Results Summary
+                            </h3>
+                            <div style="display: flex; justify-content: space-around; gap: 1rem;">
+                    """, unsafe_allow_html=True)
+                    
+                    st.markdown(f"""
+                        <div class="glass-card" style="flex: 1; text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">
+                                {len(results)}
+                            </div>
+                            <div style="color: var(--dark-bg);">Scripts Evaluated</div>
+                        </div>
+                        <div class="glass-card" style="flex: 1; text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">
+                                {avg_score:.1f}%
+                            </div>
+                            <div style="color: var(--dark-bg);">Average Score</div>
+                        </div>
+                        <div class="glass-card" style="flex: 1; text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">
+                                {processing_time:.1f}s
+                            </div>
+                            <div style="color: var(--dark-bg);">Processing Time</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    st.markdown('</div></div>', unsafe_allow_html=True)
+
+                    # Enhanced Download Button
+                    results_json = json.dumps(results, indent=4)
+                    st.markdown("""
+                        <div style="text-align: center; margin: 2rem 0;">
+                    """, unsafe_allow_html=True)
+                    st.download_button(
+                        label="📥 Download Detailed Results",
+                        data=results_json,
+                        file_name="evaluation_results.json",
+                        mime="application/json",
+                        key="download_results"
+                    )
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+            except Exception as e:
+                st.markdown(f"""
+                    <div class="glass-card" style="background: rgba(244, 67, 54, 0.1); border-color: #F44336;">
+                        <h3 style="color: #F44336; text-align: center;">
+                            ❌ An error occurred: {str(e)}
+                        </h3>
+                    </div>
+                """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
