@@ -337,9 +337,9 @@ def evaluate_answer(student_answer, correct_answer):
 def main():
     # Hero Section with Enhanced Animation   
     st.markdown("""
-        <div class="hero-section" style="background: linear-gradient(135deg, #4361ee, #3f37c9);">
+        <div class="hero-section">
             <div class="hero-content">
-                <h1 class="hero-title" style="font-size: 5rem; font-weight: 700; margin-bottom: 1.5rem; animation: fadeInDown 1s ease; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); color: white;">Grade Genie 🧞</h1>
+                <h1 class="hero-title">Grade Genie 🧞</h1>
                 <p class="hero-subtitle">Transform Your Grading Process with AI-Powered Intelligence</p>
                 <div class="glass-card" style="display: flex; justify-content: space-around; margin-top: 3rem;">
                     <div style="text-align: center; padding: 1rem;">
