@@ -336,7 +336,7 @@ def evaluate_answer(student_answer, correct_answer):
 def main():
     # Hero Section with Enhanced Animation   
     st.markdown("""
-        <div class="hero-section">
+        <div class="hero-section" style="background: linear-gradient(135deg, #4361ee, #3f37c9);">
             <div class="hero-content">
                 <h1 class="hero-title">Grade Genie 🧞</h1>
                 <p class="hero-subtitle">Transform Your Grading Process with AI-Powered Intelligence</p>
@@ -413,7 +413,8 @@ def main():
             """, unsafe_allow_html=True)
             return
 
-        with st.spinner(""):
+        loading_placeholder = st.empty()
+        with loading_placeholder:
             st.markdown("""
                 <div class="glass-card" style="text-align: center;">
                     <div class="loading-wave">
@@ -607,6 +608,7 @@ def main():
                         </h3>
                     </div>
                 """, unsafe_allow_html=True)
+    loading_placeholder.empty()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
