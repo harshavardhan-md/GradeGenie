@@ -5,7 +5,14 @@ import concurrent.futures
 import json
 import time
 
-# Custom CSS
+# Page Configuration must come first
+st.set_page_config(
+    page_title="Grade Genie 🧞 - AI Based Automated Exam Evaluation System",
+    page_icon="📝",
+    layout="wide"
+)
+
+# Custom CSS comes after page config
 st.markdown("""
 <style>
     /* Main theme colors and fonts */
@@ -136,22 +143,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Page Configuration
-st.set_page_config(
-    page_title="Grade Genie 🧞 - AI Based Automated Exam Evaluation System",
-    page_icon="📝",
-    layout="wide"
-)
-
 # Accessing API Via Streamlit Secrets
 GEMINI_API_KEY = st.secrets["Gemini_API_Token"]
 
 # Configure Gemini API
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Helper functions remain the same as in your original code
+# Helper functions remain the same
 def extract_text_from_image(image, prompt="Extract all text from this image as accurately as possible."):
-    # Your existing implementation
     try:
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
         response = model.generate_content([prompt, image])
@@ -161,7 +160,6 @@ def extract_text_from_image(image, prompt="Extract all text from this image as a
         return ""
 
 def compute_similarity_score(student_answer, correct_answer):
-    # Your existing implementation
     try:
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
         similarity_prompt = f"""
@@ -186,7 +184,6 @@ def compute_similarity_score(student_answer, correct_answer):
         return 85
 
 def evaluate_answer(student_answer, correct_answer):
-    # Your existing implementation
     try:
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
         evaluation_prompt = f"""
