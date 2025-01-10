@@ -7,7 +7,7 @@ import time
 
 # Page Configuration
 st.set_page_config(
-    page_title="Grade Genie 🧞 - AI Based Automated Exam Evaluation System",
+    page_title="Grade Genie 🧞 - AI Based Automated Exam Evaluation System.",
     page_icon="📝",
     layout="wide",
     initial_sidebar_state="collapsed"
