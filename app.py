@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Enhanced Custom CSS with more sophisticated animations and styling
+# Enhanced Custom CSS3 with more sophisticated animations and styling
 st.markdown("""
 <style>
     /* Import Google Fonts */
