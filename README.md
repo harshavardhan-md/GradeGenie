@@ -47,7 +47,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/grade-genie.git
+git clone https://github.com/harshavardhan-md/grade-genie.git
 cd grade-genie
 ```
 
